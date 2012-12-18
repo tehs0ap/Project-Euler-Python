@@ -20,12 +20,27 @@ number that cannot be expressed as the sum of two abundant numbers is less than 
 Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.
 '''
 import time
-
+from math import sqrt
 startTime = time.time()
-limit = 28123
+limit = 28124
 total = 0
 array = list()
 sumAbundant = [False] * limit
+
+#sum of positive divisors function
+def sumOfDivisors(number):
+  n = number
+  sum = 1
+  for k in range(2,int(sqrt(n)+1)):
+    p = 1
+    while n % k == 0:
+      p = (p*k)+1
+      n/=k
+    sum *= p
+  if n>1:
+    sum *= n+1
+  #aliquot sum
+  return sum #- number 
 
 def d(n):
   sum = 0
@@ -34,20 +49,19 @@ def d(n):
       sum += i
   return sum
 
-for i in range(0,limit):
-  if d(i) > i:
+for i in range(2,limit):
+  if sumOfDivisors(i) > (2 * i) and i!=0:
     array.append(i)
 
 for x in array:
   for y in array:
     if x+y >= limit:
       continue
-    sumAbundant[x+y]==True
+    sumAbundant[x+y]=True
 
-for a in sumAbundant:
- total += a
-  
-   
-print array
+for key,value in enumerate(sumAbundant):
+  if(not value):
+    total += key
+
 print total
 print "Time Elapsed: " + str(time.time() - startTime)
