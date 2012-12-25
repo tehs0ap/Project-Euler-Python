@@ -26,7 +26,9 @@ starting with n = 0.
 import time
 
 startTime = time.time()
-n = 0
+nMax = 0
+aMax = 0
+bMax = 0
 
 #Generates list of primes up to limit
 def primes_sieve(limit):
@@ -38,19 +40,34 @@ def primes_sieve(limit):
       yield i
       for n in xrange(2*i, limit, i):  # Mark factors non-prime        
         a[n] = False
+   
+primes = list(primes_sieve(100000))   
+        
+def isPrime(p):
+  i = 0
+  while primes[i] <= p:
+    if primes[i] == p:
+      return True
+    i += 1
+  return False
 
-primes = list(primes_sieve(2000))
+primeTerms = list(primes_sieve(1000))
 
 print primes;
-for b in reversed(primes):
-  if b < 1000:
-    for a in reversed(primes):
-      if a < 1000:
-        if 1+a+b or 1-a+b in primes:
-          print a
-          print b
-          print a * b
-          print
-          break
+for b in primeTerms:
+    for a in primeTerms:
+      for sign in [-1,1]:
+        n = 0
+        while isPrime(n*n + sign*a*n + b):
+          n += 1
+          
+        if n > nMax:
+          nMax = n
+          aMax = sign*a
+          bMax = b
 
+print nMax
+print aMax
+print bMax
+print aMax * bMax      
 print "Time Elapsed: " + str(time.time() - startTime)
