@@ -17,7 +17,18 @@ It can be verified that the sum of the numbers on the diagonals is 101.
 What is the sum of the numbers on the diagonals in a 1001 by 1001 spiral formed in the same way?
 '''
 import time
-
 startTime = time.time()
 
+sum = 1
+current = 1
+maxStep = 1001
+step = 2
+
+while step < maxStep:
+  for i in range(0,4):
+    current += step
+    sum += current
+  step += 2
+  
+print sum
 print "Time Elapsed: " + str(time.time() - startTime)
